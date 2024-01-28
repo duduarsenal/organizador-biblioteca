@@ -5,6 +5,7 @@ import { BookDTO } from 'src/dto/books.dto';
 import { Book } from '../interfaces/book.interface';
 
 @Injectable()
+//Classe que chamam o Model para buscar os dados do banco e inserir dados no banco
 export class BookRepository {
   
     constructor(@InjectModel('book') private readonly bookModel: Model<Book>) {}
@@ -41,6 +42,12 @@ export class BookRepository {
                 { "author.name": { $in: authorName } },
                 { "author.surname": { $in: authorName } }
             ],
+        })
+    }
+
+    async getBookByName(bookName: string): Promise<Book[]>{
+        return await this.bookModel.find({
+            name: { '$regex' : bookName, '$options': 'i'}
         })
     }
 }

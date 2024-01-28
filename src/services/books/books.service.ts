@@ -4,6 +4,7 @@ import { Book } from 'src/mongo/interfaces/book.interface';
 import { BookRepository } from 'src/mongo/repository/book.repository';
 
 @Injectable()
+//Classe que válida os valores recebidos e enviados do banco de dados, e faz a lógica funcional
 export class BooksService {
 
     constructor(
@@ -65,7 +66,7 @@ export class BooksService {
 
     async getBookByAuthor(authorName: string): Promise<Book[]>{
         try {
-            const splitedAuthorName = authorName.toLowerCase().split(' ');
+            const splitedAuthorName = authorName.split(' ');
 
             const foundBooks = await this.bookRepository.getBookByAuthor(splitedAuthorName);
 
@@ -74,6 +75,18 @@ export class BooksService {
             return foundBooks;
         } catch (error) {
             throw new BadRequestException(error.message || 'Erro na busca de livros por esse autor')
+        }
+    }
+
+    async getBookByName(bookName: string): Promise<Book[]>{
+        try {
+            const foundBooks = await this.bookRepository.getBookByName(bookName);
+
+            if (!foundBooks.length) throw new BadRequestException('Nenhum livro registrado com esse nome')
+
+            return foundBooks;
+        } catch (error) {
+            throw new BadRequestException(error.message || 'Erro na busca de livros por esse nome')
         }
     }
 

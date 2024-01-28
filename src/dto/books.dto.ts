@@ -15,7 +15,7 @@ export class BookDTO {
     @IsNotEmpty()
     @Type(() => AuthorDTO)
     @ArrayMinSize(1)
-    //Valide minha classe principal, mas também valide minha tipagem BookDTO -> AuthorDTO
+    //Valide minha classe principal, mas também valide minha tipagem do author, BookDTO -> AuthorDTO
     @ValidateNested({each: true})
     readonly author: AuthorDTO[];
 
